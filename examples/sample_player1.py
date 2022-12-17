@@ -76,6 +76,7 @@ def play_pause():
 
     else:
         vid_player.pause()
+        print(vid_player.current_duration())
         play_pause_btn["text"] = "Play"
 
 
