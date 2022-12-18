@@ -76,7 +76,7 @@ def play_pause():
 
     else:
         vid_player.pause()
-        print(vid_player.current_duration())
+        #print(vid_player.current_duration())
         play_pause_btn["text"] = "Play"
 
 
@@ -86,12 +86,18 @@ def video_ended(event):
     play_pause_btn["text"] = "Play"
     progress_slider.set(0)
 
+def capture_frame_from_vid():
+    print(vid_player.current_duration())    
+
 
 root = tk.Tk()
 root.title("Tkinter media")
 
 load_btn = tk.Button(root, text="Load", command=load_video)
 load_btn.pack()
+
+capture_frame = tk.Button(root, text="Capture Frame", command=capture_frame_from_vid)
+capture_frame.pack()
 
 vid_player = TkinterVideo(scaled=True, master=root)
 vid_player.pack(expand=True, fill="both")
