@@ -31,7 +31,12 @@ import datetime
 import tkinter as tk
 from tkinter import filedialog
 from tkVideoPlayer import TkinterVideo
+import cv2
+import math
 
+import draw_bbx_main
+
+input_file_path = ""
 
 def update_duration(event):
     """ updates the duration after finding the duration """
@@ -51,7 +56,9 @@ def load_video():
 
     if file_path:
         vid_player.load(file_path)
-
+        global input_file_path 
+        input_file_path = file_path
+        #print(input_file_path)
         progress_slider.config(to=0, from_=0)
         play_pause_btn["text"] = "Play"
         progress_slider.set(0)
@@ -87,7 +94,20 @@ def video_ended(event):
     progress_slider.set(0)
 
 def capture_frame_from_vid():
-    print(vid_player.current_duration())    
+    #print(vid_player.current_duration()) 
+    global input_file_path
+    print(input_file_path)
+    vidcap = cv2.VideoCapture(input_file_path)
+    
+    #https://queirozf.com/entries/python-number-formatting-examples
+    #truncating he value then padding with zeros to the right
+    print('{:<04}'.format(math.trunc(vid_player.current_duration())))
+    vidcap.set(cv2.CAP_PROP_POS_MSEC,float('{:<04}'.format(math.trunc(vid_player.current_duration()))))      # just cue to nth sec. position
+    success,image = vidcap.read()
+    if success:
+        cv2.imwrite("../captured_frames_folder/frame20sec.jpg", image)     # save frame as JPEG file
+        cv2.imshow("20sec",image)
+        #cv2.waitKey()     
 
 
 root = tk.Tk()
@@ -98,6 +118,9 @@ load_btn.pack()
 
 capture_frame = tk.Button(root, text="Capture Frame", command=capture_frame_from_vid)
 capture_frame.pack()
+
+get_region_of_interest = tk.Button(root, text="get region of interest", command = lambda:draw_bbx_main.draw_bbx_MAIN("../captured_frames_folder/frame20sec.jpg"))
+get_region_of_interest.pack()
 
 vid_player = TkinterVideo(scaled=True, master=root)
 vid_player.pack(expand=True, fill="both")
