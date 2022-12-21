@@ -102,7 +102,15 @@ def capture_frame_from_vid():
     #https://queirozf.com/entries/python-number-formatting-examples
     #truncating he value then padding with zeros to the right
     print('{:<04}'.format(math.trunc(vid_player.current_duration())))
-    vidcap.set(cv2.CAP_PROP_POS_MSEC,float('{:<04}'.format(math.trunc(vid_player.current_duration()))))      # just cue to nth sec. position
+
+    print(vid_player.current_duration())
+    a = vid_player.current_duration()
+    #a = 0.01;
+    a *= 1000; #// shifts decimal place right
+    print(a)
+
+
+    vidcap.set(cv2.CAP_PROP_POS_MSEC,a)      # just cue to nth sec. position
     success,image = vidcap.read()
     if success:
         cv2.imwrite("../captured_frames_folder/frame20sec.jpg", image)     # save frame as JPEG file
