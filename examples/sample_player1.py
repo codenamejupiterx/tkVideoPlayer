@@ -35,6 +35,7 @@ import cv2
 import math
 
 import draw_bbx_main
+import pic_augmenter
 
 input_file_path = ""
 
@@ -115,7 +116,11 @@ def capture_frame_from_vid():
     if success:
         cv2.imwrite("../captured_frames_folder/frame20sec.jpg", image)     # save frame as JPEG file
         cv2.imshow("20sec",image)
-        #cv2.waitKey()     
+        #cv2.waitKey() 
+        # 
+def pic_augmenter():
+    print("hello from pa")
+
 
 
 root = tk.Tk()
@@ -129,6 +134,9 @@ capture_frame.pack()
 
 get_region_of_interest = tk.Button(root, text="get region of interest", command = lambda:draw_bbx_main.draw_bbx_MAIN("../captured_frames_folder/frame20sec.jpg"))
 get_region_of_interest.pack()
+
+pic_augmenter = tk.Button(root, text="get region of interest", command = lambda:pic_augmenter)
+pic_augmenter.pack()
 
 vid_player = TkinterVideo(scaled=True, master=root)
 vid_player.pack(expand=True, fill="both")
